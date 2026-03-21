@@ -1,0 +1,72 @@
+{
+  "name": "express",
+  "version": "1.0.0",
+  "description": "",
+  "type": "commonjs",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "prebuild": "npm run lint && npm run type-check",
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "migrate:create-only": "drizzle-kit generate --config=./src/database/drizzle.config.ts",
+    "migrate": "drizzle-kit migrate --config=./src/database/drizzle.config.ts",
+    "migrate:all": "drizzle-kit push --config=./src/database/drizzle.config.ts",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .", 
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage",
+    "prepare": "husky install",
+    "generate:openapi": "ts-node --files ./src/docs/generate-openapi.ts",
+    "seed:mock-products": "ts-node --files ./src/scripts/seed-mock-products.ts",
+    "seed:delivery-sites": "ts-node --files ./src/scripts/seed-delivery-sites.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^7.3.4",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "drizzle-kit": "^0.31.1",
+    "drizzle-orm": "^0.44.2",
+    "express": "^5.1.0",
+    "fuse.js": "^7.1.0",
+    "jose": "^6.2.2",
+    "mysql2": "^3.14.1",
+    "openai": "^6.32.0",
+    "pino": "^9.7.0",
+    "swagger-ui-express": "^5.0.1",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.3",
+    "@types/pg": "^8.15.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^16.1.2",
+    "pino-pretty": "^13.0.0",
+    "prettier": "^3.5.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}

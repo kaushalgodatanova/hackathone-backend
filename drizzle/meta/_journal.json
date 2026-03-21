@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1774002681887,
+      "tag": "0000_magenta_tarantula",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1774006490458,
+      "tag": "0001_sudden_storm",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1774092161796,
+      "tag": "0002_retailer_cart_orders",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1774098724563,
+      "tag": "0003_delivery_batch_v1",
+      "breakpoints": true
+    }
+  ]
+}

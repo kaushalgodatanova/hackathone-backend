@@ -1,0 +1,32 @@
+---
+description: Hackathon backend — Express + Drizzle + Zod + OpenAPI layout under src/app
+globs: hackathon-backend/src/**/*.ts
+---
+
+# Backend conventions (`hackathon-backend`)
+
+## Layout
+
+- **`src/app/routes/`** — HTTP routers: `index.ts` (mounts `/docs`, feature routers), `auth.routes.ts`, `product.routes.ts`, … Each feature route file may export an **`OpenAPIRegistry`** (e.g. `productRegistry`) for Swagger.
+- **`src/app/controllers/`** — Request handlers (`*Controller` classes), thin: validate via middleware, call services, send JSON.
+- **`src/app/services/`** — Business logic and DB access (Drizzle transactions here).
+- **`src/database/schema/`** — Drizzle table definitions (one file per table).
+- **`src/validators/`** — Zod schemas; use **`z.infer<typeof schema>`** for types. Register OpenAPI components with `register*OpenApiSchemas(registry)` where needed.
+- **`src/middlewares/`** — `authMiddleware`, `requireDistributor`, `validate`, etc.
+- **`src/docs/openapi.ts`** — Merge feature registries, `registerAuthOpenApiSchemas`, `bearerAuth`, health path.
+
+**Do not** use a separate `src/modules/` tree — keep feature code next to **`auth`** under **`src/app/{routes,controllers,services}`**.
+
+## API rules
+
+- Product routes: **`authMiddleware`** → **`requireDistributor`**; scope by **`req.user.id`** as `distributor_id`.
+- Stock changes: **transaction** updating `Products.quantity_on_hand` + insert **`Stock_movements`**.
+- Errors: **`AppError`**; global **`errorHandler`**.
+
+## Swagger
+
+- New endpoints: add paths on the feature registry in the same file as the Express router, export the registry, import it in **`openapi.ts`**, run **`npm run generate:openapi`**.
+
+## Migrations
+
+- Schema edits → Drizzle Kit generate / migrate (no hand-edited SQL unless necessary).
