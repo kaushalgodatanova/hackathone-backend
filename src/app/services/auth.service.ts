@@ -60,19 +60,15 @@ export class AuthService {
 
     const passwordHash = await bcrypt.hash(body.password, SALT_ROUNDS);
 
-    const [inserted] = await db
-      .insert(usersTable)
-      .values({
-        email: body.email,
-        passwordHash,
-        role: body.role,
-        name: body.name,
-      })
-      .$returningId();
+    await db.insert(usersTable).values({
+      email: body.email,
+      passwordHash,
+      role: body.role,
+      name: body.name,
+    });
 
-    const id = inserted.id;
-    const userRow = await db.select().from(usersTable).where(eq(usersTable.id, id)).limit(1);
-    const user = userRow[0];
+    // Avoid .$returningId() here: mysql2 insertId can be BigInt on serverless and break Drizzle’s id mapping.
+    const [user] = await db.select().from(usersTable).where(eq(usersTable.email, body.email)).limit(1);
     if (!user) {
       throw new Error('User not found after insert');
     }
