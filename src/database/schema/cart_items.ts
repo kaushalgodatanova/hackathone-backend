@@ -4,7 +4,7 @@ import { cartsTable } from './carts';
 import { productsTable } from './products';
 
 export const cartItemsTable = mysqlTable(
-  'Cart_items',
+  'cart_items',
   {
     id: int('id').primaryKey().notNull().autoincrement(),
     cartId: int('cart_id')

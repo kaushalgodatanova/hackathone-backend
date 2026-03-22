@@ -3,7 +3,7 @@ import { int, mysqlTable, timestamp, uniqueIndex } from 'drizzle-orm/mysql-core'
 import { usersTable } from './users';
 
 export const cartsTable = mysqlTable(
-  'Carts',
+  'carts',
   {
     id: int('id').primaryKey().notNull().autoincrement(),
     retailerId: int('retailer_id')

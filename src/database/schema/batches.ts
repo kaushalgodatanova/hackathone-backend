@@ -1,6 +1,6 @@
 import { int, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core';
 
-export const batchesTable = mysqlTable('Batches', {
+export const batchesTable = mysqlTable('batches', {
   id: int('id').primaryKey().notNull().autoincrement(),
   opensAt: timestamp('opens_at').notNull(),
   closesAt: timestamp('closes_at').notNull(),

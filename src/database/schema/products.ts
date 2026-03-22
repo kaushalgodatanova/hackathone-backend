@@ -3,7 +3,7 @@ import { boolean, decimal, int, mysqlTable, uniqueIndex, varchar } from 'drizzle
 import { usersTable } from './users';
 
 export const productsTable = mysqlTable(
-  'Products',
+  'products',
   {
     id: int('id').primaryKey().notNull().autoincrement(),
     distributorId: int('distributor_id')

@@ -4,7 +4,7 @@ import { deliveryRunsTable } from './delivery_runs';
 import { deliverySitesTable } from './delivery_sites';
 import { usersTable } from './users';
 
-export const runStopsTable = mysqlTable('Run_stops', {
+export const runStopsTable = mysqlTable('run_stops', {
   id: int('id').primaryKey().notNull().autoincrement(),
   runId: int('run_id')
     .notNull()

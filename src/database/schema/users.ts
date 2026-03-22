@@ -2,7 +2,7 @@ import { decimal, int, mysqlTable, varchar } from 'drizzle-orm/mysql-core';
 
 import { deliverySitesTable } from './delivery_sites';
 
-export const usersTable = mysqlTable('Users', {
+export const usersTable = mysqlTable('users', {
   id: int('id').primaryKey().notNull().autoincrement(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   passwordHash: varchar('password_hash', { length: 255 }).notNull(),

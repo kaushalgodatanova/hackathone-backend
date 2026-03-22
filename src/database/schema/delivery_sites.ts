@@ -1,6 +1,6 @@
 import { boolean, decimal, int, mysqlTable, varchar } from 'drizzle-orm/mysql-core';
 
-export const deliverySitesTable = mysqlTable('Delivery_sites', {
+export const deliverySitesTable = mysqlTable('delivery_sites', {
   id: int('id').primaryKey().notNull().autoincrement(),
   label: varchar('label', { length: 255 }).notNull(),
   latitude: decimal('latitude', { precision: 10, scale: 7 }).notNull(),

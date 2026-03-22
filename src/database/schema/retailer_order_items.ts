@@ -3,7 +3,7 @@ import { decimal, int, mysqlTable } from 'drizzle-orm/mysql-core';
 import { productsTable } from './products';
 import { retailerOrdersTable } from './retailer_orders';
 
-export const retailerOrderItemsTable = mysqlTable('Retailer_order_items', {
+export const retailerOrderItemsTable = mysqlTable('retailer_order_items', {
   id: int('id').primaryKey().notNull().autoincrement(),
   orderId: int('order_id')
     .notNull()

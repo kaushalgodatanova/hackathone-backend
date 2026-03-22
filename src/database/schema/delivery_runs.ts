@@ -4,7 +4,7 @@ import { batchesTable } from './batches';
 import { usersTable } from './users';
 
 export const deliveryRunsTable = mysqlTable(
-  'Delivery_runs',
+  'delivery_runs',
   {
     id: int('id').primaryKey().notNull().autoincrement(),
     batchId: int('batch_id')

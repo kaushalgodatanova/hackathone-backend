@@ -3,7 +3,7 @@ import { int, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core';
 import { productsTable } from './products';
 import { usersTable } from './users';
 
-export const stockMovementsTable = mysqlTable('Stock_movements', {
+export const stockMovementsTable = mysqlTable('stock_movements', {
   id: int('id').primaryKey().notNull().autoincrement(),
   productId: int('product_id')
     .notNull()
