@@ -1,5 +1,8 @@
-import { loadEnv } from './config/env';
-import { startServer } from './server';
+import { createServer } from '../src/server';
+import { loadEnv } from '../src/config/env';
 
 loadEnv();
-startServer();
+
+const app = createServer();
+
+export default app;

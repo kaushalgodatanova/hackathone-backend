@@ -2,34 +2,34 @@ import { BatchService } from './app/services/batch.service';
 import { createApp } from './config/express';
 import { logger } from './utils/logger';
 
-export const startServer = (): void => {
+let isInitialized = false;
+
+export const createServer = () => {
   const app = createApp();
 
-  const PORT = process.env.PORT || 8000;
+  // Run only once per cold start
+  if (!isInitialized) {
+    isInitialized = true;
 
-  void BatchService.ensureOpenBatchOnStartup().catch((err: unknown) => {
-    const cause =
-      err && typeof err === 'object' && 'cause' in err ? (err as { cause?: { code?: string } }).cause : undefined;
-    const refused = cause?.code === 'ECONNREFUSED' || String(err).includes('ECONNREFUSED');
-    logger.error(
-      {
-        err,
-        hint: refused
-          ? 'MySQL refused the connection. Set DATABASE_URL to a reachable host:port. In Docker, use the database service name (e.g. mysql:3306), not localhost.'
-          : 'Verify DATABASE_URL, TLS/ssl-mode if required, and that the database exists.',
-      },
-      'Database connection failed during startup (ensureOpenBatchOnStartup)',
-    );
-    process.exit(1);
-  });
+    void BatchService.ensureOpenBatchOnStartup().catch((err: unknown) => {
+      const cause =
+        err && typeof err === 'object' && 'cause' in err ? (err as { cause?: { code?: string } }).cause : undefined;
 
-  setInterval(() => {
-    void BatchService.tick().catch((err: unknown) => {
-      logger.error({ err }, 'Batch tick failed');
+      const refused = cause?.code === 'ECONNREFUSED' || String(err).includes('ECONNREFUSED');
+
+      logger.error(
+        {
+          err,
+          hint: refused
+            ? 'MySQL refused connection. Check DATABASE_URL host/port.'
+            : 'Verify DATABASE_URL and DB availability.',
+        },
+        'Database connection failed during startup',
+      );
+
+      // ❌ DO NOT use process.exit in serverless
     });
-  }, 15_000);
+  }
 
-  app.listen(PORT, () => {
-    logger.info(`Server running on http://localhost:${PORT}`);
-  });
+  return app;
 };
