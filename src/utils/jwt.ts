@@ -1,4 +1,13 @@
-import * as jose from 'jose';
+type JoseModule = typeof import('jose');
+
+let joseCache: JoseModule | null = null;
+
+async function getJose(): Promise<JoseModule> {
+  if (!joseCache) {
+    joseCache = await import('jose');
+  }
+  return joseCache;
+}
 
 const getSecret = (): Uint8Array => {
   const secret = process.env.JWT_SECRET;
@@ -14,6 +23,7 @@ export async function signAccessToken(user: {
   role: string;
   name: string;
 }): Promise<string> {
+  const jose = await getJose();
   const token = await new jose.SignJWT({
     email: user.email,
     role: user.role,
@@ -34,6 +44,7 @@ export async function verifyAccessToken(token: string): Promise<{
   role: string;
   name: string;
 }> {
+  const jose = await getJose();
   const { payload } = await jose.jwtVerify(token, getSecret());
   const sub = payload.sub;
   const email = payload.email;
