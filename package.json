@@ -11,6 +11,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "prebuild": "npm run lint && npm run type-check",
     "build": "tsc",
+    "vercel-build": "tsc",
     "start": "node src/index.js",
     "migrate:create-only": "drizzle-kit generate --config=./src/database/drizzle.config.ts",
     "migrate": "drizzle-kit migrate --config=./src/database/drizzle.config.ts",

@@ -7,7 +7,7 @@ const app = createServer();
 
 export default app;
 
-/** Render / Docker / `npm start`: run compiled JS as the process entry. Vercel uses `api/index.ts` and does not execute this block. */
+/** Render / Docker / `npm start`: run compiled JS as the process entry. Vercel invokes the exported app and does not execute this block. */
 if (require.main === module) {
   const port = Number(getEnv().PORT);
   app.listen(port, '0.0.0.0', () => {
