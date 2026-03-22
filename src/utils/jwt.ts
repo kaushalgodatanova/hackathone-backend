@@ -2,9 +2,14 @@ type JoseModule = typeof import('jose');
 
 let joseCache: JoseModule | null = null;
 
+/**
+ * Load `jose` with real dynamic `import()` — `tsc` with `module: commonjs` turns `import('jose')`
+ * into `require('jose')`, which breaks ESM-only jose on Vercel (ERR_REQUIRE_ESM).
+ */
 async function getJose(): Promise<JoseModule> {
   if (!joseCache) {
-    joseCache = await import('jose');
+    const load = new Function('return import("jose");') as () => Promise<JoseModule>;
+    joseCache = await load();
   }
   return joseCache;
 }
