@@ -1,4 +1,8 @@
-# Optional: connect repo to Render and use this blueprint, or set the same commands in the dashboard.
+# Render Blueprint (use when this folder is the Git repo root).
+#
+# WRONG dashboard settings cause paths like: .../src/src/src/index.ts
+# - Root Directory MUST be the folder that contains package.json (this folder), NOT "src".
+# - Start Command MUST be: npm start   (runs node dist/src/index.js — never node *.ts)
 services:
   - type: web
     name: hackathone-backend
