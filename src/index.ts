@@ -5,9 +5,10 @@ import { logger } from './utils/logger';
 
 const app = createServer();
 
-export default app;
+/** Named export avoids a second Vercel entry from `export default` alongside `api/index.ts`. */
+export { app };
 
-/** Render / Docker / `npm start`: run compiled JS as the process entry. Vercel invokes the exported app and does not execute this block. */
+/** Render / Docker / `npm start`: run compiled JS as the process entry. Vercel uses `api/index.ts`. */
 if (require.main === module) {
   const port = Number(getEnv().PORT);
   app.listen(port, '0.0.0.0', () => {
