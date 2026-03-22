@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const openapi_1 = require("../../docs/openapi");
+const auth_routes_1 = __importDefault(require("./auth.routes"));
+const batch_routes_1 = __importDefault(require("./batch.routes"));
+const delivery_routes_1 = __importDefault(require("./delivery.routes"));
+const distributor_routes_1 = __importDefault(require("./distributor.routes"));
+const driver_routes_1 = __importDefault(require("./driver.routes"));
+const product_routes_1 = __importDefault(require("./product.routes"));
+const retailer_routes_1 = __importDefault(require("./retailer.routes"));
+const router = (0, express_1.Router)();
+router.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(openapi_1.openApiDocument));
+router.use(auth_routes_1.default);
+router.use(delivery_routes_1.default);
+router.use(batch_routes_1.default);
+router.use('/products', product_routes_1.default);
+router.use('/retailer', retailer_routes_1.default);
+router.use('/distributor', distributor_routes_1.default);
+router.use(driver_routes_1.default);
+exports.default = router;
