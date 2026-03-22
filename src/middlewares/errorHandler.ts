@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../utils/AppError';
 import { logger } from '../utils/logger';
 
-// eslint-disable-next-line typescript/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const errorHandler = (err: any, req: Request, res: Response, _next: NextFunction): void => {
   const statusCode = err instanceof AppError ? err.statusCode : 500;
   const message = err instanceof AppError ? err.message : 'Something went wrong';

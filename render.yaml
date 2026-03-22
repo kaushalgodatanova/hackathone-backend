@@ -1,0 +1,10 @@
+# Optional: connect repo to Render and use this blueprint, or set the same commands in the dashboard.
+services:
+  - type: web
+    name: hackathone-backend
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"

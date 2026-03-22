@@ -5,8 +5,10 @@ import prettierPlugin from 'eslint-plugin-prettier';
 
 export default [
   {
-    files: ['**/*.ts'],
     ignores: ['dist/**', 'node_modules/**'],
+  },
+  {
+    files: ['**/*.ts'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -15,8 +17,7 @@ export default [
       },
     },
     plugins: {
-      // Use plugin objects here
-      typescript: tsPlugin,
+      '@typescript-eslint': tsPlugin,
       import: importPlugin,
       prettier: prettierPlugin,
     },
@@ -34,11 +35,11 @@ export default [
         },
       ],
       'no-console': 'warn',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
 
-      // Update this line 👇
-      'typescript/no-explicit-any': 'error',
-      'typescript/explicit-function-return-type': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/explicit-function-return-type': 'warn',
 
       'import/no-extraneous-dependencies': 'off',
       'import/extensions': 'off',
