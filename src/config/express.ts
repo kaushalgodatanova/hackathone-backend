@@ -1,11 +1,12 @@
 import cors from 'cors';
 import express, { Express } from 'express';
 import routes from '../app/routes';
+import { getEnv } from './env';
 import { errorHandler } from '../middlewares/errorHandler';
 import { loggerMiddleware } from '../middlewares/loggerMiddleware';
 
 function corsOrigins(): string | string[] {
-  const raw = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+  const raw = getEnv().FRONTEND_URL;
   const list = raw
     .split(',')
     .map((s) => s.trim())

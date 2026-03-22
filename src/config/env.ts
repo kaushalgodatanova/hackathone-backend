@@ -1,6 +1,23 @@
 import { config } from 'dotenv';
 import { z } from 'zod';
 
+/** Vercel users often set `my-app.vercel.app` without a scheme; `new URL()` requires `http:` or `https:`. */
+function normalizeFrontendUrlEnv(v: unknown): string {
+  if (v === undefined || v === '') return 'http://localhost:3000';
+  const raw = String(v).trim();
+  const joined = raw
+    .split(',')
+    .map((part) => {
+      const t = part.trim();
+      if (!t) return '';
+      if (/^https?:\/\//i.test(t)) return t;
+      return `https://${t}`;
+    })
+    .filter(Boolean)
+    .join(',');
+  return joined || 'http://localhost:3000';
+}
+
 const schema = z.object({
   PORT: z.string().default('8000'),
   DATABASE_URL: z.string().url(),
@@ -8,10 +25,9 @@ const schema = z.object({
   JWT_EXPIRES_IN: z.string().default('7d'),
   /** Comma-separated allowed origins in production (must each be valid URLs). CORS reads raw `process.env.FRONTEND_URL`. */
   FRONTEND_URL: z.preprocess(
-    (v) => (v === undefined || v === '' ? 'http://localhost:3000' : v),
+    normalizeFrontendUrlEnv,
     z
       .string()
-      .transform((s) => s.trim())
       .refine(
         (s) =>
           s.split(',').every((part) => {
