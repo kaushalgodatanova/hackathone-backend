@@ -1,18 +1,4 @@
-type JoseModule = typeof import('jose');
-
-let joseCache: JoseModule | null = null;
-
-/**
- * Load `jose` with real dynamic `import()` — `tsc` with `module: commonjs` turns `import('jose')`
- * into `require('jose')`, which breaks ESM-only jose on Vercel (ERR_REQUIRE_ESM).
- */
-async function getJose(): Promise<JoseModule> {
-  if (!joseCache) {
-    const load = new Function('return import("jose");') as () => Promise<JoseModule>;
-    joseCache = await load();
-  }
-  return joseCache;
-}
+import * as jose from 'jose';
 
 const getSecret = (): Uint8Array => {
   const secret = process.env.JWT_SECRET;
@@ -28,7 +14,6 @@ export async function signAccessToken(user: {
   role: string;
   name: string;
 }): Promise<string> {
-  const jose = await getJose();
   const token = await new jose.SignJWT({
     email: user.email,
     role: user.role,
@@ -49,7 +34,6 @@ export async function verifyAccessToken(token: string): Promise<{
   role: string;
   name: string;
 }> {
-  const jose = await getJose();
   const { payload } = await jose.jwtVerify(token, getSecret());
   const sub = payload.sub;
   const email = payload.email;
