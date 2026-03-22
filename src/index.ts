@@ -1,8 +1,7 @@
-import { getEnv, loadEnv } from './config/env';
+import './init-env';
+import { getEnv } from './config/env';
 import { createServer } from './server';
 import { logger } from './utils/logger';
-
-loadEnv();
 
 const app = createServer();
 

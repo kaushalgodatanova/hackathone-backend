@@ -52,7 +52,15 @@ let cachedEnv: AppEnv | null = null;
 export function getEnv(): AppEnv {
   if (!cachedEnv) {
     config();
-    cachedEnv = schema.parse(process.env);
+    const result = schema.safeParse(process.env);
+    if (!result.success) {
+      const fields = result.error.flatten().fieldErrors;
+      throw new Error(
+        `Invalid or missing environment variables: ${JSON.stringify(fields)}. ` +
+          'Set DATABASE_URL, JWT_SECRET (16+ chars), and FRONTEND_URL in Vercel → Settings → Environment Variables.',
+      );
+    }
+    cachedEnv = result.data;
   }
   return cachedEnv;
 }
